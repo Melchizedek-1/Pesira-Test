@@ -1,9 +1,12 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import { getUsers } from './api/users/userApiRoutes';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home({ users }) {
+    console.log(users)
+
   return (
     <main className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -34,32 +37,39 @@ export default function Home() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className="bg-white border-b">
+                    {users.map((user, index) => 
+                    <tr key={index} className="bg-white border-b">
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            John Doe Wafula
+                            {user?.name}
                         </th>
                         <td className="px-6 py-4">
-                            jonte
+                            {user?.username}
                         </td>
                         <td className="px-6 py-4">
-                            johndoe@gmail.com
+                            {user?.email}
                         </td>
                         <td className="px-6 py-4">
-                            0711223344
+                            {user?.phone}
                         </td>
                         <td className="px-6 py-4">
-                            Company
+                            {user?.company?.name}
                         </td>
                         <td className="px-6 py-4">
-                            Street
+                            {user?.address?.street}
                         </td>
-                        <td className="px-6 py-4">
+                        {/* <td className="px-6 py-4">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        </td>
+                        </td> */}
                     </tr>
+                    )}
                 </tbody>
             </table>
         </div>
     </main>
   )
 }
+
+export const getServerSideProps = async () => {
+    const users = await getUsers();
+    return { props: { users }, };
+};
