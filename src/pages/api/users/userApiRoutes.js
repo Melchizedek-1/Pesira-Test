@@ -9,3 +9,8 @@ export const getUsers = async () => {
     const response = await usersApi.get(usersUrlEndpoint);
     return response.data;
 };
+
+export const createUser = async (userData) => {
+    const response = await usersApi.post(usersUrlEndpoint, userData);
+    return response.data;
+};

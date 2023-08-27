@@ -1,14 +1,16 @@
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import { getUsers } from './api/users/userApiRoutes';
+import UserForm from '@/components/userForm';
+import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home({ users }) {
-    console.log(users)
+    const [allUsers, setAllUsers] = useState(users);
 
   return (
-    <main className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}>
+    <main className={`flex min-h-screen flex-col items-center justify-between py-24 ${inter.className}`}>
+        <UserForm setAllUsers={setAllUsers} allUsers={allUsers} />
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -37,7 +39,7 @@ export default function Home({ users }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user, index) => 
+                    {allUsers.map((user, index) => 
                     <tr key={index} className="bg-white border-b">
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {user?.name}
@@ -57,9 +59,9 @@ export default function Home({ users }) {
                         <td className="px-6 py-4">
                             {user?.address?.street}
                         </td>
-                        {/* <td className="px-6 py-4">
+                        <td className="px-6 py-4">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        </td> */}
+                        </td>
                     </tr>
                     )}
                 </tbody>
